@@ -39,7 +39,7 @@
         /*margin-left: 60px;*/
         /*width: calc(100% - 60px);*/
         /*width: 100%;*/
-        width: calc(100% + 15px);
+        width: 100%;
         height: 30px;
         background: #3b3b3b;
         /*background: #bfa;*/

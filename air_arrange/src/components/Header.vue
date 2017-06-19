@@ -1,7 +1,7 @@
 <template>
     <div class="header">
       <!--v-model 双向数据绑定-->
-      <input type="text" class="search" :placeholder="placeHolderValue" v-model='inputValue' @keyup='textChange' id='search'><label for='search' class='search_label' @click='search'><span class='icon-search'></span></label>
+      <input type="text" class="search" :placeholder="placeHolderValue" v-model='inputValue' @keyup.enter='textChange' id='search'><label for='search' class='search_label' @click='search'><span class='icon-search'></span></label>
       <select @change='selectValue($event)'>
         <option>请选择搜索类型(模糊搜索)</option>
         <option selected>按机型搜索</option>
@@ -167,6 +167,7 @@ export default {
 
         // 搜索框输入检索相关的列表
         textChange (ev) {
+//            debugger
           console.time('hello')
           this.$store.commit('UPDATE_TD',{inputValue: this.inputValue, vm: this, placeHolderValue: this.placeHolderValue})
 //          this.$nextTick(() => {

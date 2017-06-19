@@ -133,11 +133,11 @@
 
             this.$refs.sideContent.style.height = document.documentElement.clientHeight - 30 + 'px'
             if(!this.$store.state.isDiviScreen) {
-                let rightContent = document.querySelector('.merge_wrap').querySelector('.right_message')
-                this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
+                //let rightContent = document.querySelector('.merge_wrap').querySelector('.right_message')
+                //this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
             } else {
-                let rightContent = document.querySelector('.divi_wrap').querySelector('.right_message')
-                this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
+               // let rightContent = document.querySelector('.divi_wrap').querySelector('.right_message')
+                //this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
             }
         },
         methods: {
@@ -167,7 +167,7 @@
                 //this.$store.commit('DEL_RIGHT_CONTENT', this.undoArr)
                 if(this.undoArr.length === 3) {
 
-                    $scrollBar.resize('.scroll-x', '.fixed-x-bar', '.scroll', {merge: '.merge_wrap', divi1: '.divi_content1', divi2: '.divi_content2'}, {content: '.contentWrap', right: '.rightWrap'},  this.$store.state.isDiviScreen)
+                    // $scrollBar.resize('.scroll-x', '.fixed-x-bar', '.scroll', {merge: '.merge_wrap', divi1: '.divi_content1', divi2: '.divi_content2'}, {content: '.contentWrap', right: '.rightWrap'},  this.$store.state.isDiviScreen)
                     this.$refs.sideContent.style.display = 'none'
 
                 }
@@ -191,7 +191,7 @@
         position: absolute;
         right: 0;
         top: 30px;
-        width: 15%;
+        width: calc(20% - 60px);
         /*height: 100%;*/
         display: flex;
         flex-direction: column;

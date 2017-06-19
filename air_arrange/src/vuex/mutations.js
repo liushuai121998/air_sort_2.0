@@ -113,9 +113,9 @@ export default {
         if (placeHolderValue.search('时间') > 0) {
             return
         }
-
+        dataChange(state.cloneMergeData, state.initData, false)
         if (!state.isDiviScreen) {
-            dataChange(state.cloneMergeData, state.initData, false)
+
         } else {
             // dataChange(state.cloneComeData, state.comeData, true)
             // dataChange(state.cloneLeaveData, state.leaveData, true)
@@ -187,12 +187,13 @@ export default {
             } else {
                 vm.$set(state.length, 'mergeLength', state.initData.length)
             }
-
+          console.log(arrIndex.length)
         }
 
         //state.inputValue = inputValue
 
         console.time('render')
+
         vm.$nextTick(function(){
           //渲染完毕
           console.timeEnd('render')
@@ -555,7 +556,7 @@ export default {
 
             console.timeEnd('each')
 
-            //state.initData = data.flight
+            // state.initData = data.flight
                 // 复制一份初始化数据
             console.time('stringify')
             //state.cloneInitData = JSON.parse(JSON.stringify(data.flight))
@@ -575,7 +576,7 @@ export default {
 
             state.initData.forEach((item, index, arr) => {
                 // console.log(item['operationDate'].slice(0, 10) === item['brotherDate'].slice(0, 10))
-                if (item['operationDate'].slice(0, 10) === item['brotherDate'].slice(0, 10) && item['brother'] != '/') {
+                if (item['brother'] != '/') {
 
                     if (flightNoArr.indexOf(item['brother']) >= 0) {
 
@@ -593,17 +594,21 @@ export default {
             })
             console.timeEnd('auth')
 
-
+            console.log(mergeData, flightNoArr)
             // 整合连班航班数据
             mergeData.forEach((item) => {
 
-                vm.$set(state.initData[item["index"]], 'flightNo', state.initData[item["index"]]['flightNo'] + " / " + state.cloneInitData[item["_index"]]['flightNo'])
-                vm.$set(state.initData[item['index']], 'repeatCount', state.initData[item['index']]['repeatCount'] + ' / ' + state.cloneInitData[item['_index']]['repeatCount'])
-                vm.$set(state.initData[item['index']], 'regNo', state.initData[item['index']]['regNo'] + ' / ' + state.cloneInitData[item['_index']]['regNo'])
-                    // 航班id
-                vm.$set(state.initData[item['index']], 'flightId', state.initData[item['index']]['flightId'] + ' / ' + state.cloneInitData[item['_index']]['flightId'])
+                // vm.$set(state.initData[item["index"]], 'flightNo', state.initData[item["index"]]['flightNo'] + " / " + state.cloneInitData[item["_index"]]['flightNo'])
+                // vm.$set(state.initData[item['index']], 'repeatCount', state.initData[item['index']]['repeatCount'] + ' / ' + state.cloneInitData[item['_index']]['repeatCount'])
+                // vm.$set(state.initData[item['index']], 'regNo', state.initData[item['index']]['regNo'] + ' / ' + state.cloneInitData[item['_index']]['regNo'])
+                //     // 航班id
+                // vm.$set(state.initData[item['index']], 'flightId', state.initData[item['index']]['flightId'] + ' / ' + state.cloneInitData[item['_index']]['flightId'])
+                state.initData[item["index"]].flightNo =  state.initData[item["index"]]['flightNo'] + " / " + state.cloneInitData[item["_index"]]['flightNo']
+                state.initData[item["index"]].repeatCount =  state.initData[item["index"]]['repeatCount'] + " / " + state.cloneInitData[item["_index"]]['repeatCount']
+                state.initData[item["index"]].regNo =  state.initData[item["index"]]['regNo'] + " / " + state.cloneInitData[item["_index"]]['regNo']
+                state.initData[item["index"]].flighflightIdtNo =  state.initData[item["index"]]['flightId'] + " / " + state.cloneInitData[item["_index"]]['flightId']
 
-                if (state.initData[item['index']]['dori'] != state.cloneInitData[item['_index']]['dori']) {
+              if (state.initData[item['index']]['dori'] != state.cloneInitData[item['_index']]['dori']) {
                     vm.$set(state.initData[item['index']], 'dori', state.initData[item['index']]['dori'] + ' / ' + state.cloneInitData[item['_index']]['dori'])
                 }
                 if (state.initData[item['index']]['airType'] != state.cloneInitData[item['_index']]['airType']) {

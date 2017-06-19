@@ -80,7 +80,7 @@ export default {
 
                     function mouseUpEnd() {
                         vm.$store.commit('UPDATE_IS_SORT', true)
-                        //$scorll.moveWrapWidth(parent, '.move_wrap', '.tab')
+                        $scorll.moveWrapWidth('.tab', '.test')
                         document.removeEventListener('mousemove', callback)
                         document.removeEventListener('mouseup', mouseUpEnd)
                     }
@@ -171,15 +171,32 @@ export default {
     },
 
     scroll({vm, scrollBar}) {
+      let length = vm.$store.state.initData.length
+      console.log(length)
+      let liHeight = document.querySelectorAll('li')[0].offsetHeight
+      let totalHeight = length * liHeight
+      scrollBar.style.height = (scrollBar.parentNode.offsetHeight * scrollBar.parentNode.offsetHeight) / totalHeight + 'px'
+
+      setTimeout(() => {
+        let liHeight = 34
+        let totalHeight = length * liHeight
+        scrollBar.style.height = (scrollBar.parentNode.offsetHeight * scrollBar.parentNode.offsetHeight) / totalHeight + 'px'
+      }, 20)
+
       scrollBar.addEventListener('mousedown', downCallback)
       let maxT = scrollBar.parentNode.offsetHeight - scrollBar.offsetHeight
+
       function downCallback(ev) {
         this.initY = this.offsetTop
-        console.log(this.initY)
         this.downY = ev.clientY
         let that = this
-        document.addEventListener('mousemove', moveCallback)
-        function moveCallback (ev) {
+        document.addEventListener('mousemove', moveCallback(moveSomething))
+        function moveCallback (func) {
+          let timer;
+          return realMove.bind()
+
+        }
+        function realMove(ev) {
           that.moveY = ev.clientY
           let T = that.moveY - that.downY
           if(T < 0) {
@@ -187,6 +204,16 @@ export default {
           }else if(T > maxT) {
             T = maxT
           }
+          that.style.top = T + that.initY + 'px'
+          let context = this;
+          let args = arguments;
+          clearTimeout(timer);
+          timer = setTimeout(function() {
+            console.log(args)
+            func(T);
+          }, 500);
+        }
+        function moveSomething (T) {
           let scale = T/maxT
           if(scale === 0) {
             vm.len = 30
@@ -194,9 +221,9 @@ export default {
             vm.len = Math.floor(scale * vm.$store.state.initData.length)
           }
           vm.startIndex = vm.len - 30
-          that.style.top = T + that.initY + 'px'
         }
         document.addEventListener('mouseup', upCallback)
+
         function upCallback () {
           document.removeEventListener('mousemove', moveCallback)
           document.removeEventListener('mouseup', upCallback)
@@ -273,7 +300,10 @@ export default {
           if(vm.startIndex < 0) {
             vm.startIndex = 0
             vm.len = 30
+            scrollBar.style.top = 0
             return
+          } else if(vm.len > vm.$store.state.initData.length) {
+            vm.len = vm.$store.state.initData.length
           }
           let scale = vm.len / vm.$store.state.initData.length
           console.log(scale)
@@ -349,19 +379,27 @@ export default {
      * @param {*} el
      * @param {*} el2
      */
-    theadFixed(parent, el, el2) {
-        let contentWrap = parent.querySelector(el)
-        let theadWrap = contentWrap.querySelector(el2)
-        let fixedIndex = parent.querySelectorAll('.index_fixed')
-        console.log(fixedIndex.length)
-        contentWrap.onscroll = function(ev) {
-            theadWrap.style.top = this.scrollTop + 'px';
-            // 计算太多 执行多次
-            [].slice.call(fixedIndex).forEach((item, index) => {
-                console.log('hhhhh')
-                item.style.left = this.scrollLeft + 'px'
-            })
-
+    // theadFixed(parent, el, el2) {
+    //     let contentWrap = parent.querySelector(el)
+    //     let theadWrap = contentWrap.querySelector(el2)
+    //     let fixedIndex = parent.querySelectorAll('.index_fixed')
+    //     contentWrap.onscroll = function(ev) {
+    //         theadWrap.style.top = this.scrollTop + 'px';
+    //
+    //         [].slice.call(fixedIndex).forEach((item, index) => {
+    //             console.log('hhhhh')
+    //             item.style.left = this.scrollLeft + 'px'
+    //         })
+    //
+    //     }
+    // },
+    theadFixed(parent, fixWrap, el) {
+        console.log(parent)
+        let tab = parent.querySelector(el)
+        parent.onscroll = function (ev) {
+          console.log(this.scrollTop, this.scrollLeft)
+          tab.style.top = this.scrollTop + 'px'
+          // fixWrap.style.left = this.scrollLeft + 'px'
         }
     },
     /**
@@ -405,12 +443,18 @@ export default {
    * @param el
    * @param el2
    */
-    moveWrapWidth (parent, el, el2) {
-      let moveWrap = parent.querySelector(el)
-      console.log(moveWrap)
-      let tab = parent.querySelector(el2)
-      moveWrap.style.width = tab.offsetWidth - 142 + 'px';
-      //console.log(tab.offsetWidth)
+    // moveWrapWidth (parent, el, el2) {
+    //   let moveWrap = parent.querySelector(el)
+    //   // console.log(moveWrap)
+    //   let tab = parent.querySelector(el2)
+    //   moveWrap.style.width = tab.offsetWidth - 142 + 'px';
+    //   //console.log(tab.offsetWidth)
+    // },
+    moveWrapWidth (el, el2) {
+      let tab = document.querySelector(el)
+      let test = document.querySelector(el2)
+      test.style.width = tab.offsetWidth + 'px'
+      console.log(tab.offsetWidth, test.offsetWidth)
     },
     defaultMouse ({vm, mergeWrap}) {
       console.log(mergeWrap, 'mergeWrap')

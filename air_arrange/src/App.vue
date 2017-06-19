@@ -4,11 +4,11 @@
       <v-header></v-header>
       <!--<v-header :td-data="tdData"></v-header>-->
       <side-bar></side-bar>
+      <test></test>
       <!--<keep-alive>-->
-        <!--<table-content v-once :get-td-data="getTdData"></table-content>-->
+        <!--<table-content v-once v-show="!isDiviScreen"></table-content>-->
       <!--</keep-alive>-->
       <!--<v-footer></v-footer>-->
-      <test></test>
       <right-content></right-content>
     </div>
     <div v-else>
@@ -22,8 +22,8 @@ import header from './components/Header'
 import test from './components/test'
 import sideBar from './components/sideBar'
 import rightContent from './components/rightContent'
-//import tableContent from './components/tableContentTest'
-//import footer from './components/footer'
+import tableContent from './components/tableContentTest'
+import footer from './components/footer'
 import login from './components/login'
 import Vue from 'vue'
 export default {
@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       isContentShow: this.$store.state.isContentShow,
-      tdData: this.$store.state.initData
+      tdData: this.$store.state.initData,
+      isDiviScreen: this.$store.state.isDiviScreen
     }
   },
   created () {
@@ -57,7 +58,7 @@ export default {
     // }
   },
 //  components: {'v-header': header, 'side-bar': sideBar, 'table-content': tableContent, 'v-footer': footer, 'login': login}
-  components: {'v-header': header, 'test': test, 'login': login, 'side-bar': sideBar, 'right-content': rightContent}
+  components: {'v-header': header, 'test': test, 'login': login, 'side-bar': sideBar, 'right-content': rightContent, 'table-content': tableContent}
 }
 </script>
 
