@@ -91,9 +91,9 @@
           </div>
         </div>
         <div class="content_info">
-          <ul>
+          <!--<ul>
             <li v-for="str in flightUpdateInfo">{{str}}</li>
-          </ul>
+          </ul>-->
         </div>
         <div class='message_area'>
           <textarea></textarea>
@@ -133,11 +133,11 @@
 
             this.$refs.sideContent.style.height = document.documentElement.clientHeight - 30 + 'px'
             if(!this.$store.state.isDiviScreen) {
-                //let rightContent = document.querySelector('.merge_wrap').querySelector('.right_message')
-                //this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
+                let rightContent = document.querySelector('.merge_wrap').querySelector('.right_message')
+                this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
             } else {
-               // let rightContent = document.querySelector('.divi_wrap').querySelector('.right_message')
-                //this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
+                let rightContent = document.querySelector('.divi_wrap').querySelector('.right_message')
+                this.$store.commit('RIGHT_CONTENT', {vm: this, rightContent})
             }
         },
         methods: {
@@ -169,7 +169,6 @@
 
                     // $scrollBar.resize('.scroll-x', '.fixed-x-bar', '.scroll', {merge: '.merge_wrap', divi1: '.divi_content1', divi2: '.divi_content2'}, {content: '.contentWrap', right: '.rightWrap'},  this.$store.state.isDiviScreen)
                     this.$refs.sideContent.style.display = 'none'
-
                 }
             },
             undo(ev, item) {    // 撤销   数据驱动
@@ -190,8 +189,9 @@
     .right_message {
         position: absolute;
         right: 0;
-        top: 30px;
-        width: calc(20% - 60px);
+        top: 0;
+        /*width: 15%;*/
+        width: calc(15% - 15px);
         /*height: 100%;*/
         display: flex;
         flex-direction: column;

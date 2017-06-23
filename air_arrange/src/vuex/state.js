@@ -153,11 +153,15 @@ export default {
     // 服务信息的更新
     serviceUpdateInfo: [],
     diviData: [],
-  // content部分的this
+    // content部分的this
     contentThis: null,
     // 是否航控排序
     isSorted: false,
     // 航班排序数据
     flyData: [],
-    highFlyData: []
+    highFlyData: [],
+    // 航班排序规则
+    sortRule: [],
+    // sideBar 部分的this
+    sideBarThis: null
 }

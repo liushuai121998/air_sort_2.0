@@ -1,93 +1,44 @@
-<!DOCTYPE>
-<html>
+<!DOCTYPE html>
+<html lang="zh">
 
 <head>
-    <meta charset='utf-8'>
-    <title>Js文本溢出自动添加省略号ellipsis-兼容版</title>
-    <style type="text/css">
-        .wrap {
-            /*width: 200px;*/
-        }
-
-        .inner {
-            /*position: absolute;*/
-            display: flex;
-            flex-direction: row;
-        }
-
-        .content {
-            display: flex;
-            width: 100px;
-            height: 100px;
-            background: #bfa;
-            list-style: none;
-            flex-direction: column;
-            padding: 0;
-            float: left;
-        }
-
-        .content li {
+    <meta charset="UTF-8">
+    <title>测试函数节流</title>
+    <style>
+        #container {
             width: 100%;
-            background: red;
-            border: 1px solid black;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            height: 200px;
+            border: 1px solid #646464;
+            color: #000000;
         }
     </style>
 
 </head>
 
 <body>
-    <div class='wrap'>
-        <div class="inner">
-            <ul class='content'>
-                <li>111111111111111111111111111111111111111111111111</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-            <ul class='content'>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-            </ul>
-        </div>
-    </div>
-    <script type="text/javascript">
-
-    </script>
+    <div id="container"></div>
 </body>
+<script>
+    function throttle(func) {
+        var timer;
+        return function(ev) {
+            var context = this;
+            console.log(ev, 'arguments')
+            var args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                func.apply(context, args);
+            }, 1000);
+        }
+
+    }
+
+    function alertSomething() {
+        alert("您的鼠标正在移动");
+    };
+
+    //document.getElementById("container").onmousemove = throttle(alertSomething);
+    document.getElementById('container').addEventListener('mousemove', throttle(alertSomething))
+</script>
 
 </html>

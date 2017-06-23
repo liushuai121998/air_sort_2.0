@@ -12,6 +12,9 @@
     <div class="inner">
       <div class="test" ref="test">
         <!--航班数据-->
+        <ul style="width: 40px" ref="flagIndex" class="flag_index">
+          <li v-for="len in length">{{len}}</li>
+        </ul>
         <ul v-for="showItem in tdData" :style="{width: showItem.width}">
           <li v-for="(tdItem, index) in showItem.data" :key="index">{{tdItem}}</li>
         </ul>
@@ -41,7 +44,7 @@
         initData: this.$store.state.initData,
         thLeftData: this.$store.state.thLeftData,
         startIndex: 0,
-        len: 30
+        len: 25
       }
     },
     created () {
@@ -115,9 +118,8 @@
     },
     computed:{
       tdData () {
-        console.log(this.$store.state.initData.length)
         let showData = []
-        this.$store.state.thLeftData.forEach((item) => {
+        this.$store.state.thLeftData.slice(1).forEach((item) => {
           let arr = {
             data: [],
             width: item.width
@@ -144,8 +146,17 @@
         return serviceArr
       },
       length () {
-        let lenArr = [...Array(this.$store.state.initData.length).keys()]
-        return lenArr
+//        let lenArr = [...Array(this.$store.state.initData.length).keys()]
+//        return lenArr
+          let arr = [];
+
+          Array.prototype.range = function ( start,end ){
+            let _self = this;
+            let length = end - start +1;
+            let step = start - 1;
+            return Array.apply(null,{length:length}).map(function (v,i){step++;return step;});
+          }
+          return arr.range(this.startIndex + 1, this.len)
       }
     },
     components: {'v-footer': footer}
@@ -186,6 +197,9 @@
     color: black;
     position: relative;
     cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .test {
     margin-top: 34px;
@@ -204,6 +218,9 @@
     text-align: center;
     line-height: 34px;
     color: #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .scroll_bar {
     width: 15px;
@@ -217,7 +234,7 @@
   .scroll_bar .scroll {
     width: 100%;
     /*height: 50px;*/
-    background: red;
+    background: #aaa;
     position: absolute;
     left: 0;
     top: 0;
@@ -229,7 +246,7 @@
     bottom: -15px;
     width: 100%;
     height: 15px;
-    background: red;
+    background: #aaa;
   }
   .scroll_x .scroll_x_bar {
     position: absolute;
@@ -266,8 +283,9 @@
     top: 0;
     height: 100%;
     width: 3px;
-    /*background:  #e8e8e8;*/
-    background: red;
+    background:  #e8e8e8;
+    /*background: red;*/
     cursor: e-resize;
   }
+
   </style>

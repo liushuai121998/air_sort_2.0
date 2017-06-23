@@ -16,7 +16,7 @@
         },
         methods: {
             showContent () {
-                this.$store.commit('SHOW_CONTENT', {val: this.$refs.user.value, vm: this})
+                this.$store.commit('USER_VALUE', {val: this.$refs.user.value, vm: this})
             }
         }
     }

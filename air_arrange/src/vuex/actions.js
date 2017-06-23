@@ -259,12 +259,29 @@ export default {
 
     },
     // 获取初始化数据
-    GET_INIT_DATA ({commit}, vm) {
-      console.time('sync')
-      vm.$http.get('/api/data').then((res) => {
-        console.timeEnd('sync')
-        console.log(Date.now())
-        commit('GET_INIT_DATA', {vm, data: res.data.data.d, time: Date.now()})
-      })
-    }
+    GET_INIT_DATA({ commit }, vm) {
+        console.time('sync')
+            // vm.$http.post('http://192.168.7.53:8080/getInitData', { "username": 'ghms_admin' }).then((res) => {
+        vm.$http.get('/api/data').then((res) => {
+            console.timeEnd('sync')
+            console.log(Date.now())
+            commit('GET_INIT_DATA', { vm, data: res.data.data.d, time: Date.now() })
+        })
+    },
+    /**
+     * 展现数据 建立websocket链接
+     */
+    SHOW_CONTENT({ commit }, { val, vm }) {
+        vm.$http.post('http://192.168.7.53:8080/login', { "username": val }).then((res) => {
+            // vm.$nextTick(() => {
+            // setTimeout(() => {
+            console.log(val, res)
+            commit('SHOW_CONTENT', { res: res, vm: vm })
+                // }, 10000)
+                // })
+
+        })
+
+
+    },
 }

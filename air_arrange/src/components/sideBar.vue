@@ -99,26 +99,27 @@
 
         if(this.isShowRight) {
           this.$store.state.rightContent.style.display = 'flex'
-          document.querySelector('.divi_wrap').style.width = '85%';
-
           if(!this.$store.state.isDiviScreen) {
             document.querySelector('.merge_wrap').style.width = '85%'
-            document.querySelector('.contentWrap').style.width = '100%'
+            // document.querySelector('.contentWrap').style.width = '100%'
+          }else {
+            document.querySelector('.divi_wrap').style.width = '85%';
           }
 
         }else {
           if(!this.$store.state.isDiviScreen) {
             document.querySelector('.merge_wrap').style.width = '100%'
-            document.querySelector('.contentWrap').style.width = '100%'
+            // document.querySelector('.contentWrap').style.width = '100%'
+          }else {
+            document.querySelector('.divi_wrap').style.width = '100%';
           }
 
           this.$store.state.rightContent.style.display = 'none'
-          document.querySelector('.divi_wrap').style.width = '100%';
+          
         }
-        [].slice.call(document.querySelector('.divi_wrap').querySelectorAll('.contentWrap')).forEach(item => {
-                item.style.width = '100%'
-        });
-        $scrollBar.resize('.scroll-x', '.scroll', {merge: '.merge_wrap', divi1: '.divi_content1', divi2: '.divi_content2'}, {content: '.contentWrap', right: '.rightWrap'},  this.$store.state.isDiviScreen)
+        // [].slice.call(document.querySelector('.divi_wrap').querySelectorAll('.contentWrap')).forEach(item => {
+        //         item.style.width = '100%'
+        // });
       }
     }
   }

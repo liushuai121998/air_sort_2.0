@@ -1,19 +1,19 @@
 <template>
     <div class="header">
       <!--v-model 双向数据绑定-->
-      <input type="text" class="search" :placeholder="placeHolderValue" v-model='inputValue' @keyup.enter='textChange' id='search'><label for='search' class='search_label' @click='search'><span class='icon-search'></span></label>
-      <select @change='selectValue($event)'>
-        <option>请选择搜索类型(模糊搜索)</option>
-        <option selected>按机型搜索</option>
-        <option>按时间搜索</option>
-        <option>按航班号搜索</option>
-        <option>按航线搜索</option>
-        <option>按航班状态搜索</option>
-        <option>按机号搜索</option>
+      <input type="text" class="search" @keydown.enter='search' :placeholder="placeHolderValue" v-model='inputValue' @keyup='textChange' id='search'><label for='search' class='search_label' @click='search'><span class='icon-search'></span></label>
+      <select @change='selectValue($event)' id="search-select">
+        <option value="all" selected>请选择搜索类型(模糊搜索)</option>
+        <option value="airType">按机型搜索</option>
+        <option value="">按时间搜索</option>
+        <option value="flightNo">按航班号搜索</option>
+        <option value="line">按航线搜索</option>
+        <option value="status">按航班状态搜索</option>
+        <option value="regNo">按机号搜索</option>
       </select>
       <!--操作数据-->
       <input type="button" value="新增" @click='addData'>
-      <!--<input type="button" value="修改">-->
+      <input type="button" value="模拟事件推送" @click='mockChange'>
       <!--<input type="button" value="删除">-->
       <select>
         <option>全部代理</option>
@@ -50,7 +50,7 @@
         </ul>
       </section>
       <span class='show_time'>标准时间: {{time | formatDate}}</span>
-      <input type='text' class='show_info' :value='flightUpdateInfo && flightUpdateInfo[flightUpdateInfo.length - 1]'>
+      <!--<input type='text' class='show_info' :value='flightUpdateInfo && flightUpdateInfo[flightUpdateInfo.length - 1]'>-->
       <!--<div class='control_wrap'>
         <span class="icon-minus"></span>
         <span class="icon-checkbox-unchecked"></span>
@@ -72,7 +72,8 @@ export default {
           isFlightClick: false,
           isInputChange: true,
           showFirstIndex: 0,
-          placeHolderValue: '按机型搜索',
+          placeHolderValue: '模糊搜索',
+          searchTypeCloumns: 'all',
           toggle: false,
           showData: [{value: 'eq', text: '全部显示', isChecked: false}],
           logFlag: false,
@@ -104,7 +105,7 @@ export default {
           })
         })
 
-        let serviceArr = [].concat(this.$store.state.serviceData[0])
+        let serviceArr = this.$store.state.serviceData[0] ? this.$store.state.serviceData[0] : []
         serviceArr.forEach((item, index) => {
           this.serviceDataInfo.push({
             text: item['detailName'],
@@ -112,9 +113,10 @@ export default {
           })
         })
 
-      }, 1000)
-
+      }, 5000)
       this.changeTime()
+    },
+    updated () {
     },
     methods: {
         changeTime () {
@@ -151,115 +153,33 @@ export default {
         addData (ev) {
           // 新增数据
           this.$store.commit('ADD_DATA', this)
-          // this.$store.commit('FLY_CONTROL_SORT', this)
-
         },
         search (ev) {
-
           if(this.placeHolderValue.indexOf('时间') < 0) {
             return
           }
           // 时间段的搜索
           ev.target.value = ''
           this.$store.commit('SEARCH', {vm: this, inputValue: this.inputValue, placeHolderValue: this.placeHolderValue})
-
         },
 
         // 搜索框输入检索相关的列表
         textChange (ev) {
-//            debugger
-          console.time('hello')
-          this.$store.commit('UPDATE_TD',{inputValue: this.inputValue, vm: this, placeHolderValue: this.placeHolderValue})
-//          this.$nextTick(() => {
-//              console.timeEnd('hello')
-//          })
-//          if (this.placeHolderValue.search('时间') > 0) {
-//            return
-//          }
-
-          if (!this.$store.state.isDiviScreen) {
-
-            //console.log(this.cloneData)
-            //this.dataChange(this.cloneData, this.tdData, false)
-          } else {
-//            dataChange(state.cloneComeData, state.comeData, true)
-//            dataChange(state.cloneLeaveData, state.leaveData, true)
-          }
-          let _this = this
-
-          console.time('id')
-
-
+          this.inputValue = this.inputValue.toUpperCase();
+          this.$store.commit('UPDATE_TD',{inputValue: this.inputValue, vm: this, placeHolderValue: this.placeHolderValue, searchTypeCloumns:this.searchTypeCloumns})
         },
-        dataChange(cloneData, data, isDivi) {
-            //debugger
-            // 重置数据
-            console.time('id')
-
-            cloneData.forEach((item, index) => {
-              this.$set(data, index, item)
-            })
-
-            let arrIndex = []
-            let param = ''
-            this.inputValue = this.inputValue.toUpperCase()
-
-            data.forEach((item, index) => {
-              if (this.placeHolderValue.search('机型') > 0) {
-                param = 'airType'
-                if (item[param] && item[param].indexOf(this.inputValue) >= 0) {
-                  arrIndex.push(item)
-                }
-
-
-              } else if (this.placeHolderValue.search('航班') > 0) {
-
-                param = 'flightNo'
-                if (item[param] && item[param].search(this.inputValue) >= 0) {
-                  arrIndex.push(item)
-                }
-              } else if (this.placeHolderValue.search('状态') > 0) {
-                param = 'status'
-                if (item[param] && item[param].search(this.inputValue) >= 0) {
-                  arrIndex.push(item)
-                }
-              } else if (this.placeHolderValue.search('航线') > 0) {
-                param = 'line'
-                if (item[param] && item[param].search(this.inputValue) >= 0) {
-                  arrIndex.push(item)
-                }
-              } else if (this.placeHolderValue.search('机号') > 0) {
-                param = 'regNo'
-                if (item[param] && item[param].search(this.inputValue) >= 0) {
-                  arrIndex.push(item)
-                }
-              }
-
-            })
-            //data = JSON.parse(JSON.stringify(arrIndex))
-            if(arrIndex.length === data.length) {
-              return;
-            }
-            console.time('bbb')
-            data.splice(arrIndex.length)
-            data.forEach((item, index, arr) => {
-              this.$set(arr, index, arrIndex[index])
-            })
-
-            // 判断是否分屏, 更新数量
-          //            if (isDivi) {
-          //              vm.$set(state.length, "comeLength", state.comeData.length)
-          //              vm.$set(state.length, 'leaveLength', state.leaveData.length)
-          //            } else {
-          //              vm.$set(state.length, 'mergeLength', state.initData.length)
-          //            }
-
-          },
         selectValue (ev) {
-          this.placeHolderValue = ev.target.value
+        	//console.log(ev.target.value)
+        	var selectObj = document.getElementById("search-select")
+        	//console.log(selectObj.options[selectObj.selectedIndex].text)
+        	//var value = obj.options[obj.selectedIndex].value;
+ 
+        	
+          this.placeHolderValue = selectObj.options[selectObj.selectedIndex].text 
+          this.searchTypeCloumns = ev.target.value
           this.inputValue = ''
           // 将检索后的数据重置， 当select的值发生变化时
-          this.$store.commit('RESET_DATA_SEARCH', {vm: this})
+          // this.$store.commit('RESET_DATA_SEARCH', {vm: this})
         },
         toggleShow () {
           //this.toggle = !this.toggle
@@ -340,7 +260,12 @@ export default {
 //            }
           }
           this.isServiceShow = !this.isServiceShow
+        },
+        // 模拟事件推送，航控排序
+        mockChange () {
+          this.$store.commit('MOCK_FLIGHT_CHANGE', {vm: this})
         }
+        
     },
     /*时间过滤*/
     filters: {
@@ -348,6 +273,9 @@ export default {
             var date = new Date(time);
             return formatDate(date, ' hh:mm:ss yyyy-MM-dd');
         }
+    },
+    computed: {
+      
     }
 }
 </script>

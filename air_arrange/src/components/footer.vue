@@ -36,19 +36,13 @@
 </script>
 <style>
     .footer {
-        /*margin-left: 60px;*/
-        /*width: calc(100% - 60px);*/
-        /*width: 100%;*/
-        width: 100%;
+        margin-left: 60px;
+        width: calc(100% - 60px);
         height: 30px;
         background: #3b3b3b;
         /*background: #bfa;*/
         color: #fff;
         line-height: 30px;
-        position: absolute;
-        bottom: -30px;
-        /*bottom: 0;*/
-        left: 0;
     }
     .footer section {
         float: right;
@@ -58,6 +52,6 @@
         margin-left: 80px;
     }
     .footer section span:last-child {
-        /*margin-right: 300px;*/
+        margin-right: 300px;
     }
 </style>
